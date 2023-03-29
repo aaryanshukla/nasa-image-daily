@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import useStyles from './styles';
 import Icon from './icon';
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleLogin, googleLogout  } from "@react-oauth/google";
+import { GoogleLogin, GoogleLogout, GoogleOAuthProvider} from "@react-oauth/google";
+import { Redirect } from 'react-router-dom';
+
 
 
 const Login = () => {
@@ -56,11 +57,24 @@ const Login = () => {
     google.accounts.id.prompt();
   }
 
-  const googleSuccess = async (res) => {
-    console.log(res);
+  const handleGoogleLogin = () => {
+    window.open(
+          'http://localhost:8080/api/auth/google/callback',
+          "_self"
+        );
+        localStorage.setItem("token", "aaryan");
 
-  }
+        window.open(
+          '/',
+          "_self"
+        );
+    
+  };
 
+
+  const handleGoogleLoginFailure = (error) => {
+    console.log(error);
+  };
     
 
   const googleFailure = () => alert('Google Sign In was unsuccessful. Try again later')
@@ -96,7 +110,14 @@ const Login = () => {
             <button type="submit" className={styles.green_btn}>
               Sign In
             </button>
-           
+                <GoogleOAuthProvider clientId="148379985030-v1igf0cg3b8bbmpnnv9e7613er0tf9h6.apps.googleusercontent.com">
+              <GoogleLogin
+              buttonText="Sign in with Google"
+              onSuccess={handleGoogleLogin}
+              onFailure={handleGoogleLoginFailure}
+               cookiePolicy={'single_host_origin'}
+            />
+               </GoogleOAuthProvider>
           </form>
         </div>
 

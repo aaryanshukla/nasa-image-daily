@@ -6,6 +6,10 @@ const connection = require("./db");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 const axios = require('axios');
+const cookieSession = require("cookie-session");
+const passportStrategy = require("./passport");
+const passport = require("passport");
+
 
 app.get('/', (req, res) => {
     axios
@@ -23,10 +27,30 @@ app.get('/', (req, res) => {
 // database connection
 connection();
 
-// middlewares
-app.use(express.json());
-app.use(cors());
 
+app.use(
+	cookieSession({
+		name: "session",
+		keys: ["aaryan"],
+		maxAge: 24 * 60 * 60 * 100,
+	})
+);
+
+
+// middlewares
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+app.use(express.json());
+
+app.use(
+	cors({
+		origin: "http://localhost:3000",
+		methods: "GET,POST,PUT,DELETE",
+		credentials: true,
+	})
+);
 // routes
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
