@@ -21,7 +21,7 @@
     "react-google-login": "^5.2.2",
     "react-jss": "^10.10.0",
     "react-router-dom": "^6.9.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "sass-loader": "^13.2.2",
     "style-loader": "^3.3.2",
     "web-vitals": "^2.1.4"
